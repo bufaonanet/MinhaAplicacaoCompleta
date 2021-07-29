@@ -3,15 +3,24 @@ import { throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { LocalStorageUtils } from "../utils/localhistorage";
 
-export abstract class BaseService{
+export abstract class BaseService {
 
-    protected UrlServiceV1 = environment.apiUrlVi;    
+    protected UrlServiceV1 = environment.apiUrlVi;
     public LocalStorage = new LocalStorageUtils();
 
     protected ObterHeaderJson() {
         return {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
+            })
+        };
+    }
+
+    protected ObterAuthHeaderJson() {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.LocalStorage.obterTokenUsuario()}`
             })
         };
     }

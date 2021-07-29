@@ -55,9 +55,10 @@
                     <div class="form-group">
                         <label class="control-label">CEP</label>
                         <div>
-                            <input class="form-control" id="cep" type="text" placeholder="CEP (requerido)" formControlName="cep" 
-                            [textMask]="{mask: MASKS.cep.textMask}"
-                            [ngClass]="{ 'is-invalid': displayMessage.cep }" />
+                            <input #campoCep class="form-control" id="cep" type="text" placeholder="CEP (requerido)" formControlName="cep" 
+                            [textMask]="{mask: MASKS.cep.textMask}" [ngClass]="{ 'is-invalid': displayMessage.cep }" (blur)="buscarCep(campoCep.value)"
+                            />
+                            
                             <span class="text-danger" *ngIf="displayMessage.cep">
                             <p [innerHTML]="displayMessage.cep"></p>
                         </span>
