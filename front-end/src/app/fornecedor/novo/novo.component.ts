@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { ToastrService } from 'ngx-toastr';
 import { fromEvent, merge, Observable } from 'rxjs';
 
@@ -26,6 +27,8 @@ export class NovoComponent implements OnInit, AfterViewInit {
 
   formResult: string = '';
 
+  public MASKS = MASKS;
+
   mudancasNaoSalvas: boolean;
 
   constructor(
@@ -40,6 +43,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
       },
       documento: {
         required: 'Informe o Documento',
+        cpf: 'Cpf em formato inválido',
       },
       logradouro: {
         required: 'Informe o Logradouro',
@@ -68,7 +72,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
 
     this.fornecedorForm = this.fb.group({
       nome: ['', [Validators.required]],
-      documento: ['', [Validators.required]],
+      documento: ['', [Validators.required, NgBrazilValidators.cpf]],
       ativo: ['', [Validators.required]],
       tipoFornecedor: ['', [Validators.required]],
 
@@ -82,6 +86,8 @@ export class NovoComponent implements OnInit, AfterViewInit {
         estado: ['', [Validators.required]],
       })
     });
+
+    this.fornecedorForm.patchValue({ tipoFornecedor: '1', ativo: true })
 
   }
 

@@ -12,6 +12,8 @@ import { DetalhesComponent } from './detalhes/detalhes.component';
 import { EditarComponent } from './editar/editar.component';
 import { ExcluirComponent } from './excluir/excluir.component';
 import { NovoComponent } from './novo/novo.component';
+import { NgBrazil } from 'ng-brazil';
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 @NgModule({
@@ -29,6 +31,8 @@ import { NovoComponent } from './novo/novo.component';
     ReactiveFormsModule,
     HttpClientModule,
     FornecedorRoutingModule,
+    TextMaskModule,
+    NgBrazil,
   ],
   providers:[
     FornecedorService
