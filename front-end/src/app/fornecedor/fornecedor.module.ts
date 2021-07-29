@@ -15,6 +15,7 @@ import { DetalhesComponent } from './detalhes/detalhes.component';
 import { EditarComponent } from './editar/editar.component';
 import { ExcluirComponent } from './excluir/excluir.component';
 import { NovoComponent } from './novo/novo.component';
+import { FornecedorResolve } from './services/fornecedor.resolve';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { NovoComponent } from './novo/novo.component';
     NgBrazil,
   ],
   providers:[
-    FornecedorService
+    FornecedorService,
+    FornecedorResolve
   ]
 })
 export class FornecedorModule { }
