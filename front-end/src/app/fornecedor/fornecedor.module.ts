@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { FornecedorService } from './services/fornecedor.service';
+import { FornecedorRoutingModule } from './fornecedor.route';
+
 import { FornecedorAppComponent } from './fornecedor.app.component';
 import { ListaComponent } from './lista/lista.component';
-import { FornecedorRoutingModule } from './fornecedor.route';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { EditarComponent } from './editar/editar.component';
 import { ExcluirComponent } from './excluir/excluir.component';
 import { NovoComponent } from './novo/novo.component';
-import { FornecedorService } from './services/fornecedor.service';
-import { HttpClientModule } from '@angular/common/http';
-
 
 
 @NgModule({
@@ -23,8 +25,10 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     FornecedorRoutingModule,
-    HttpClientModule
   ],
   providers:[
     FornecedorService
