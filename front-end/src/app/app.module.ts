@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { NavegacaoModule } from './navegacao/navegacao.module';
+import { FornecedorModule } from './fornecedor/fornecedor.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NavegacaoModule } from './navegacao/navegacao.module';
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
     NavegacaoModule,
+    FornecedorModule,
     NgbModule
   ],
   providers: [],
