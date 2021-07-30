@@ -16,6 +16,7 @@ import { EditarComponent } from './editar/editar.component';
 import { ExcluirComponent } from './excluir/excluir.component';
 import { NovoComponent } from './novo/novo.component';
 import { FornecedorResolve } from './services/fornecedor.resolve';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { FornecedorResolve } from './services/fornecedor.resolve';
     FornecedorRoutingModule,
     TextMaskModule,
     NgBrazil,
+    NgxSpinnerModule
   ],
   providers:[
     FornecedorService,

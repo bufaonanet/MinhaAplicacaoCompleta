@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormControlName, FormGroup, Validators } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MASKS, NgBrazilValidators } from 'ng-brazil';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { fromEvent, merge, Observable } from 'rxjs';
 
@@ -44,7 +45,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private spinner: NgxSpinnerService
   ) {
     this.validationMessages = {
       nome: {
@@ -84,6 +86,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
+    this.spinner.show();
+
     this.fornecedorForm = this.fb.group({
       id: '',
       nome: ['', [Validators.required]],
@@ -105,6 +109,10 @@ export class EditarComponent implements OnInit, AfterViewInit {
     });
 
     this.preencherForm();
+
+    setTimeout(() => {      
+      this.spinner.hide();
+    }, 1000);
 
   }
 
@@ -251,6 +259,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
         );
     }
   }
+
+  
 
   processarSucessoEndereco(endereco: Endereco) {
     this.errors = [];
