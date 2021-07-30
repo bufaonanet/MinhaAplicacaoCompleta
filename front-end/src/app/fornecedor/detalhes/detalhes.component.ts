@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Fornecedor } from '../models/fornecedor';
 
@@ -10,8 +11,14 @@ export class DetalhesComponent {
 
   fornecedor: Fornecedor = new Fornecedor();
 
-  constructor(private route: ActivatedRoute,) {
+  enderecoMap: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer) {
+
     this.fornecedor = this.route.snapshot.data['fornecedor'];
+    this.enderecoMap = this.sanitizer.bypassSecurityTrustResourceUrl("https://www.google.com/maps/embed/v1/place?q=" + this.EnderecoCompleto() + "&key=AIzaSyAP0WKpL7uTRHGKWyakgQXbW6FUhrrA5pE");
   }
 
   public EnderecoCompleto(): string {
