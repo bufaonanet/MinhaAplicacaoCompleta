@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { ToastrService } from 'ngx-toastr';
 import { fromEvent, merge, Observable } from 'rxjs';
@@ -42,7 +43,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
     private fornecedorService: FornecedorService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: NgbModal
   ) {
     this.validationMessages = {
       nome: {
@@ -90,6 +92,18 @@ export class EditarComponent implements OnInit, AfterViewInit {
       tipoFornecedor: ['', [Validators.required]]
     });
 
+    this.enderecoForm = this.fb.group({
+      id: '',
+      logradouro: ['', [Validators.required]],
+      numero: ['', [Validators.required]],
+      complemento: [''],
+      bairro: ['', [Validators.required]],
+      cep: ['', [Validators.required, NgBrazilValidators.cep]],
+      cidade: ['', [Validators.required]],
+      estado: ['', [Validators.required]],
+      fornecedorId: ''
+    });
+
     this.preencherForm();
 
   }
@@ -111,16 +125,17 @@ export class EditarComponent implements OnInit, AfterViewInit {
       this.documento().setValidators([Validators.required, NgBrazilValidators.cnpj]);
     }
 
-    // this.enderecoForm.patchValue({
-    //   id: this.fornecedor.endereco.id,
-    //   logradouro: this.fornecedor.endereco.logradouro,
-    //   numero: this.fornecedor.endereco.numero,
-    //   complemento: this.fornecedor.endereco.complemento,
-    //   bairro: this.fornecedor.endereco.bairro,
-    //   cep: this.fornecedor.endereco.cep,
-    //   cidade: this.fornecedor.endereco.cidade,
-    //   estado: this.fornecedor.endereco.estado
-    // });
+    this.enderecoForm.patchValue({
+      id: this.fornecedor.endereco.id,
+      logradouro: this.fornecedor.endereco.logradouro,
+      numero: this.fornecedor.endereco.numero,
+      complemento: this.fornecedor.endereco.complemento,
+      bairro: this.fornecedor.endereco.bairro,
+      cep: this.fornecedor.endereco.cep,
+      cidade: this.fornecedor.endereco.cidade,
+      estado: this.fornecedor.endereco.estado
+    });
+
   }
 
   ngAfterViewInit() {
@@ -218,6 +233,40 @@ export class EditarComponent implements OnInit, AfterViewInit {
   processarFalha(fail: any) {
     this.errors = fail.error.errors;
     this.toastr.error('Ocorreu um erro!', 'Opa :(');
+  }
+
+  editarEndereco() {
+    if (this.enderecoForm.dirty && this.enderecoForm.valid) {
+
+      this.endereco = Object.assign({}, this.endereco, this.enderecoForm.value);
+      
+      this.endereco.cep = StringUtils.somenteNumeros(this.endereco.cep);
+      this.fornecedor.tipoFornecedor = StringUtils.removerAspasNumero(this.fornecedor.tipoFornecedor);
+      this.endereco.fornecedorId = this.fornecedor.id;
+
+      this.fornecedorService.atualizarEndereco(this.endereco)
+        .subscribe(
+          () => this.processarSucessoEndereco(this.endereco),
+          falha => { this.processarFalhaEndereco(falha) }
+        );
+    }
+  }
+
+  processarSucessoEndereco(endereco: Endereco) {
+    this.errors = [];
+
+    this.toastr.success('Endereço atualizado com sucesso!', 'Sucesso!');
+    this.fornecedor.endereco = endereco
+    this.modalService.dismissAll();
+  }
+
+  processarFalhaEndereco(fail: any) {
+    this.errorsEndereco = fail.error.errors;
+    this.toastr.error('Ocorreu um erro!', 'Opa :(');
+  }
+
+  abrirModal(content: any) {
+    this.modalService.open(content)
   }
 
 }
