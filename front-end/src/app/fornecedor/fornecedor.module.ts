@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FornecedorService } from './services/fornecedor.service';
@@ -31,8 +30,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
+    ReactiveFormsModule,  
     FornecedorRoutingModule,
     TextMaskModule,
     NgBrazil,

@@ -10,7 +10,6 @@ import { Fornecedor } from '../models/fornecedor';
 export class DetalhesComponent {
 
   fornecedor: Fornecedor = new Fornecedor();
-
   enderecoMap: any;
 
   constructor(

@@ -5,9 +5,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { NavegacaoModule } from './navegacao/navegacao.module';
 import { FornecedorModule } from './fornecedor/fornecedor.module';
+import { ErrorInterceptor } from './services/error.handler.service';
+
+export const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+]
 
 @NgModule({
   declarations: [
@@ -20,9 +26,12 @@ import { FornecedorModule } from './fornecedor/fornecedor.module';
     ToastrModule.forRoot(), // ToastrModule added
     NavegacaoModule,
     FornecedorModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

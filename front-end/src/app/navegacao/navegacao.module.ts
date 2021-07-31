@@ -9,6 +9,7 @@ import { FooterComponent } from "./footer/footer.component";
 import { MenuComponent } from "./menu/menu.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { MenuLoginComponent } from "./menu-login/menu-login.component";
+import { AcessoNegadoComponent } from './acesso-negado/acesso-negado.component';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import { MenuLoginComponent } from "./menu-login/menu-login.component";
         FooterComponent,
         MenuComponent,
         MenuLoginComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        AcessoNegadoComponent
     ],
     imports: [
         CommonModule,
