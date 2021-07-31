@@ -84,7 +84,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
       endereco: this.fb.group({
         logradouro: ['', [Validators.required]],
         numero: ['', [Validators.required]],
-        complemento: ['', [Validators.required]],
+        complemento: [''],
         bairro: ['', [Validators.required]],
         cep: ['', [Validators.required, NgBrazilValidators.cep]],
         cidade: ['', [Validators.required]],

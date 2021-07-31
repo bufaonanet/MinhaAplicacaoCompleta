@@ -151,7 +151,7 @@
 
 
                 <div class="form-group">
-                    <input type="submit" value="Cadastrar" class="btn btn-primary">&nbsp;
+                    <input type="submit" value="Cadastrar" [disabled]="!fornecedorForm.valid" class="btn btn-primary">&nbsp;
                     <a class="btn btn-info" [routerLink]="[ '/fornecedores/listar-todos']">Voltar</a>
                 </div>
 
