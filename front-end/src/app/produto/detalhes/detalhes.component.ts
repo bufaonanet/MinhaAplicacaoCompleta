@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Produto } from '../models/produto';
 
 @Component({
   selector: 'app-detalhes',
   templateUrl: './detalhes.component.html'
 })
-export class DetalhesComponent implements OnInit {
+export class DetalhesComponent {
 
-  constructor() { }
+  produto: Produto;
 
-  ngOnInit(): void {
+  constructor(private route: ActivatedRoute) {
+
+    this.produto = this.route.snapshot.data['produto'];
   }
 
 }

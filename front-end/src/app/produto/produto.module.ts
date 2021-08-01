@@ -9,6 +9,10 @@ import { NovoComponent } from './novo/novo.component';
 import { ProdutoRoutingModule } from './produto.routing';
 import { ProdutoAppComponent } from './produto.app.component';
 import { ProdutoService } from './services/produto.service';
+import { NgBrazil } from 'ng-brazil';
+import { TextMaskModule } from 'angular2-text-mask';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProdutoResolve } from './services/produto.resolve';
 
 @NgModule({
   declarations: [
@@ -21,10 +25,15 @@ import { ProdutoService } from './services/produto.service';
   ],
   imports: [
     CommonModule,
-    ProdutoRoutingModule
+    ProdutoRoutingModule,
+    NgBrazil,
+    TextMaskModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers:[
-    ProdutoService
+    ProdutoService,
+    ProdutoResolve,
   ]
 })
 export class ProdutoModule { }
