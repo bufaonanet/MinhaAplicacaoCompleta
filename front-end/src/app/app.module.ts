@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NavegacaoModule } from './navegacao/navegacao.module';
 import { FornecedorModule } from './fornecedor/fornecedor.module';
 import { ErrorInterceptor } from './services/error.handler.service';
+import { ProdutoModule } from './produto/produto.module';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
@@ -27,7 +28,8 @@ export const httpInterceptorProviders = [
     NavegacaoModule,
     FornecedorModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    ProdutoModule
   ],
   providers: [
     httpInterceptorProviders

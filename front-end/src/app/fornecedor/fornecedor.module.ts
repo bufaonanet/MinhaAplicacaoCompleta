@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FornecedorService } from './services/fornecedor.service';
-import { FornecedorRoutingModule } from './fornecedor.route';
+import { FornecedorRoutingModule } from './fornecedor.routing';
 
 import { NgBrazil } from 'ng-brazil';
 import { TextMaskModule } from 'angular2-text-mask';
