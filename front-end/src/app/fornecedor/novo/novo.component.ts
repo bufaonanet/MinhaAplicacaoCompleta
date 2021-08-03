@@ -3,9 +3,8 @@ import { AbstractControl, FormBuilder, FormControlName, FormGroup, Validators } 
 import { Router } from '@angular/router';
 import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { ToastrService } from 'ngx-toastr';
-import { fromEvent, merge, Observable } from 'rxjs';
 
-import { DisplayMessage, GenericValidator, ValidationMessages } from 'src/app/utils/generic-form-validation';
+import { FormBaseComponent } from 'src/app/base-components/form-base.component';
 import { StringUtils } from 'src/app/utils/string-utils';
 import { CepConsulta } from '../models/endereco';
 import { Fornecedor } from '../models/fornecedor';
@@ -15,30 +14,26 @@ import { FornecedorService } from '../services/fornecedor.service';
   selector: 'app-novo',
   templateUrl: './novo.component.html'
 })
-export class NovoComponent implements OnInit, AfterViewInit {
+export class NovoComponent extends FormBaseComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
   errors: any[] = [];
   fornecedorForm: FormGroup;
-  fornecedor: Fornecedor = new Fornecedor();
-
-  validationMessages: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
+  fornecedor: Fornecedor = new Fornecedor(); 
 
   formResult: string = '';
   textoDocumento = "CPF (Requerido)"
 
   public MASKS = MASKS;
 
-  mudancasNaoSalvas: boolean;
-
   constructor(
     private fb: FormBuilder,
     private fornecedorService: FornecedorService,
     private router: Router,
     private toastr: ToastrService) {
+
+      super();
 
     this.validationMessages = {
       nome: {
@@ -70,7 +65,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.genericValidator = new GenericValidator(this.validationMessages);
+    super.configurarMensagensValidacaoBase(this.validationMessages);
   }
 
   ngOnInit(): void {
@@ -99,27 +94,13 @@ export class NovoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.tipoFornecedorForm().valueChanges.subscribe(() => {
       this.trocarValidacaoDocumento();
-      this.configurarElementosValidacao();
-      this.validarFormulario();
+      this.configurarValidacaoFormularioBase(this.formInputElements,this.fornecedorForm);
+      super.validarFormulario(this.fornecedorForm);
     });
 
-    this.configurarElementosValidacao();
+    this.configurarValidacaoFormularioBase(this.formInputElements,this.fornecedorForm);
   }
-
-  configurarElementosValidacao() {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.validarFormulario();
-    });
-  }
-
-  validarFormulario() {
-    this.displayMessage = this.genericValidator.processarMensagens(this.fornecedorForm);
-    this.mudancasNaoSalvas = true;
-  }
-
+ 
   trocarValidacaoDocumento() {
     if (this.tipoFornecedorForm().value === "1") {
       this.documento().clearValidators();

@@ -1,21 +1,18 @@
 import { Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
-import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControlName, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MASKS } from 'ng-brazil';
 import { ToastrService } from 'ngx-toastr';
-import { fromEvent, merge, Observable } from 'rxjs';
 import { CurrencyUtils } from 'src/app/utils/currency-utils';
 
-import { DisplayMessage, GenericValidator, ValidationMessages } from 'src/app/utils/generic-form-validation';
 import { environment } from 'src/environments/environment';
-import { Fornecedor, Produto } from '../models/produto';
+import { ProdutoBaseComponent } from '../produto-form.base.component';
 import { ProdutoService } from '../services/produto.service';
 
 @Component({
   selector: 'app-editar',
   templateUrl: './editar.component.html'
 })
-export class EditarComponent implements OnInit {
+export class EditarComponent extends ProdutoBaseComponent implements OnInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
@@ -24,21 +21,7 @@ export class EditarComponent implements OnInit {
   imageBase64: any;
   imagemPreview: any;
   imagemNome: string;
-  imagemOriginalSrc: string;
-
-  produto: Produto;
-  fornecedores: Fornecedor[];
-  errors: any[] = [];
-  produtoForm: FormGroup;
-
-  validationMessages: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
-
-  public MASKS = MASKS;
-  formResult: string = '';
-
-  mudancasNaoSalvas: boolean;
+  imagemOriginalSrc: string;  
 
   constructor(
     private fb: FormBuilder,
@@ -46,30 +29,9 @@ export class EditarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService
-  ) { 
-    this.validationMessages = {
-      fornecedorId: {
-        required: 'Escolha um fornecedor',
-      },
-      nome: {
-        required: 'Informe o Nome',
-        minlength: 'Mínimo de 2 caracteres',
-        maxlength: 'Máximo de 200 caracteres'
-      },
-      descricao: {
-        required: 'Informe a Descrição',
-        minlength: 'Mínimo de 2 caracteres',
-        maxlength: 'Máximo de 1000 caracteres'
-      },
-      imagem: {
-        required: 'Informe a Imagem',
-      },
-      valor: {
-        required: 'Informe o Valor',
-      }
-    };
+  ) {
+    super();
 
-    this.genericValidator = new GenericValidator(this.validationMessages);
     this.produto = this.route.snapshot.data['produto'];
   }
 
@@ -101,13 +63,7 @@ export class EditarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.produtoForm);
-      this.mudancasNaoSalvas = true;
-    });
+    super.configurarValidacaoFormulario(this.formInputElements);
   }
 
   editarProduto() {
@@ -120,8 +76,8 @@ export class EditarComponent implements OnInit {
       }
 
       this.produto.valor = CurrencyUtils.StringParaDecimal(this.produto.valor);
-     
-     this.produtoService.atualizarProduto(this.produto)
+
+      this.produtoService.atualizarProduto(this.produto)
         .subscribe(
           sucesso => { this.processarSucesso(sucesso) },
           falha => { this.processarFalha(falha) }
@@ -146,7 +102,7 @@ export class EditarComponent implements OnInit {
   processarFalha(fail: any) {
     this.errors = fail.error.errors;
     this.toastr.error('Ocorreu um erro!', 'Opa :(');
-  } 
+  }
 
   upload(file: any) {
     this.imagemNome = file[0].name;

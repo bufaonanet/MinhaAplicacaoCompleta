@@ -8,13 +8,14 @@ import { Router } from '@angular/router';
 
 import { Usuario } from '../models/usuario';
 import { ContaService } from '../services/conta.service';
+import { FormBaseComponent } from 'src/app/base-components/form-base.component';
 
 
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.component.html'
 })
-export class CadastroComponent implements OnInit, AfterViewInit {
+export class CadastroComponent extends FormBaseComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
@@ -35,6 +36,8 @@ export class CadastroComponent implements OnInit, AfterViewInit {
     private router: Router,
     private toastr: ToastrService) {
 
+    super();
+
     this.validationMessages = {
       email: {
         required: 'Informe o e-mail',
@@ -51,7 +54,7 @@ export class CadastroComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.genericValidator = new GenericValidator(this.validationMessages);
+    super.configurarMensagensValidacaoBase(this.validationMessages);
   }
 
   ngOnInit(): void {
@@ -67,14 +70,7 @@ export class CadastroComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.cadastroForm);
-      this.mudancasNaoSalvas = true;
-    });
-
+    this.configurarValidacaoFormularioBase(this.formInputElements, this.cadastroForm);
   }
 
   adicionarConta() {
@@ -87,7 +83,7 @@ export class CadastroComponent implements OnInit, AfterViewInit {
           falha => { this.processarFalha(falha) }
         );
 
-        this.mudancasNaoSalvas = false;
+      this.mudancasNaoSalvas = false;
     }
   }
 
