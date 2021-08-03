@@ -17,6 +17,7 @@ import { NovoComponent } from './novo/novo.component';
 import { FornecedorResolve } from './services/fornecedor.resolve';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { FornecedorGuard } from './services/fornecedor.guard';
+import { ListaProdutosComponent } from './produtos/lista-produtos.component';
 
 
 @NgModule({
@@ -26,15 +27,16 @@ import { FornecedorGuard } from './services/fornecedor.guard';
     DetalhesComponent, 
     EditarComponent, 
     ExcluirComponent, 
-    NovoComponent
+    NovoComponent,
+    ListaProdutosComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,  
     FornecedorRoutingModule,
-    TextMaskModule,
     NgBrazil,
+    TextMaskModule,
     NgxSpinnerModule
   ],
   providers:[
