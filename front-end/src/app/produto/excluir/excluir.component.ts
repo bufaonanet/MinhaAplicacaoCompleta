@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { Produto } from '../models/produto';
 import { ProdutoService } from '../services/produto.service';
 
@@ -10,6 +11,7 @@ import { ProdutoService } from '../services/produto.service';
 })
 export class ExcluirComponent {
 
+  imagensUrl: string = environment.imagensUrl;
   produto: Produto;
 
   constructor(
