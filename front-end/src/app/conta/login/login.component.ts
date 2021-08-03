@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormControl, Validators, FormBuilder, FormControlName } from '@angular/forms';
 import { CustomValidators } from 'ngx-custom-validators';
 import { fromEvent, merge, Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Usuario } from '../models/usuario';
 import { ContaService } from '../services/conta.service';
@@ -25,10 +25,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
   genericValidator: GenericValidator;
   displayMessage: DisplayMessage = {};
 
+  returnUrl: string;
+
   constructor(
     private fb: FormBuilder,
     private contaService: ContaService,
     private router: Router,
+    private route: ActivatedRoute,
     private toastr: ToastrService) {
 
     this.validationMessages = {
@@ -42,10 +45,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
     };
 
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -85,7 +89,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     let toast = this.toastr.success('Login realizado com sucesso', 'Bem vindo');
     if (toast) {
       toast.onHidden.subscribe(() => {
-        this.router.navigate(['/home']);
+        this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/home'])
       });
     }
 
